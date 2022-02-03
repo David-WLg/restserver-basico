@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const router = require('../routes/usuarios');
+const { dbConnection } = require('../database/config');
 
 
 class Server{
@@ -8,7 +8,10 @@ class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
+        this.usersPath = '/api/users';
+
+        //conectar a la base de datos
+        this.conectDB();
 
         //Middlewares - Se llaman antes de routes
         this.middlewares();
@@ -18,10 +21,8 @@ class Server{
         
     }
 
-    routes(){
-        
-        this.app.use(this.usuariosPath, router)
-          
+    async conectDB(){
+        await dbConnection();
     }
 
     middlewares(){
@@ -33,6 +34,12 @@ class Server{
 
         //Servir la carpeta public
         this.app.use(express.static('public'));
+    }
+
+    routes(){
+        
+        this.app.use(this.usersPath, require('../routes/users'))
+          
     }
 
     listen(){
