@@ -55,4 +55,13 @@ const isProductIdExist = async (value) => {
     }
 }
 
-module.exports = { isRoleValid, notEmailExist, isIdExist, isCategoryIdExist, isProductIdExist };
+const isValidCollection = (collection = '', allowedCollections = []) => {
+    const isValid = allowedCollections.includes( collection );
+    if(!isValid){
+        return false;
+    }
+    
+    return true;
+}
+
+module.exports = { isRoleValid, notEmailExist, isIdExist, isCategoryIdExist, isProductIdExist, isValidCollection };
